@@ -1,11 +1,11 @@
 [![CircleCI](https://circleci.com/gh/krzysztofzablocki/Sourcery.svg?style=shield)](https://circleci.com/gh/krzysztofzablocki/Sourcery)
 <!-- [![codecov](https://codecov.io/gh/krzysztofzablocki/Sourcery/branch/master/graph/badge.svg)](https://codecov.io/gh/krzysztofzablocki/Sourcery) -->
-[![docs](https://merowing.info/Sourcery/badge.svg)](https://merowing.info/Sourcery/index.html)
+[![docs](https://krzysztofzablocki.github.io/Sourcery/badge.svg)](https://krzysztofzablocki.github.io/Sourcery/index.html)
 [![Version](https://img.shields.io/cocoapods/v/Sourcery.svg?style=flat)](http://cocoapods.org/pods/Sourcery)
 [![License](https://img.shields.io/cocoapods/l/Sourcery.svg?style=flat)](http://cocoapods.org/pods/Sourcery)
 [![Platform](https://img.shields.io/cocoapods/p/Sourcery.svg?style=flat)](http://cocoapods.org/pods/Sourcery)
 
-**There is now a new powerful way to both write and integrate Sourcery functionality: Sourcery Pro provides powerful Stencil editor and extends Xcode with ability to handle live AST templates: [available on Mac App Store](https://apps.apple.com/us/app/sourcery-pro/id1561780836?mt=12)**
+**There is now a new powerful way to both write and integrate Sourcery functionality: Sourcery Pro provides a powerful Stencil editor and extends Xcode with the ability to handle live AST templates: [available on Mac App Store](https://apps.apple.com/us/app/sourcery-pro/id1561780836?mt=12)**
 
 https://user-images.githubusercontent.com/1468993/114271090-f6c19200-9a0f-11eb-9bd8-d7bb15129eb2.mp4
 
@@ -51,20 +51,20 @@ and with Sourcery ?
 extension MyProtocol: AutoMockable {}
 ```
 
-Sourcery removes the need to write any of the mocks code, how many protocol do you have in your project? Imagine how much time you'll save, using Sourcery will also make every single mock consistent and if you refactor or add properties, the mock code will be automatically updated for you, eliminating possible human errors. 
+Sourcery removes the need to write any of the mocks code, how many protocols do you have in your project? Imagine how much time you'll save, using Sourcery will also make every single mock consistent and if you refactor or add properties, the mock code will be automatically updated for you, eliminating possible human errors. 
 
 Sourcery can be applied to arbitrary problems across your codebase, if you can describe an algorithm to another human, you can automate it using Sourcery.
 
 Most common uses are:
 
-- [Equality](https://merowing.info/Sourcery/equatable.html) & [Hashing](https://merowing.info/Sourcery/hashable.html)
-- [Enum cases & Counts](https://merowing.info/Sourcery/enum-cases.html)
-- [Lenses](https://merowing.info/Sourcery/lenses.html)
-- [Mocks & Stubs](https://merowing.info/Sourcery/mocks.html)
-- [LinuxMain](https://merowing.info/Sourcery/linuxmain.html)
-- [Decorators](https://merowing.info/Sourcery/decorator.html)
-- [Persistence and advanced Codable](https://merowing.info/Sourcery/codable.html)
-- [Property level diffing](https://merowing.info/Sourcery/diffable.html)
+- [Equality](https://krzysztofzablocki.github.io/Sourcery/equatable.html) & [Hashing](https://krzysztofzablocki.github.io/Sourcery/hashable.html)
+- [Enum cases & Counts](https://krzysztofzablocki.github.io/Sourcery/enum-cases.html)
+- [Lenses](https://krzysztofzablocki.github.io/Sourcery/lenses.html)
+- [Mocks & Stubs](https://krzysztofzablocki.github.io/Sourcery/mocks.html)
+- [LinuxMain](https://krzysztofzablocki.github.io/Sourcery/linuxmain.html)
+- [Decorators](https://krzysztofzablocki.github.io/Sourcery/decorator.html)
+- [Persistence and advanced Codable](https://krzysztofzablocki.github.io/Sourcery/codable.html)
+- [Property level diffing](https://krzysztofzablocki.github.io/Sourcery/diffable.html)
 
 But how about more specific use-cases, like automatically generating all the UI for your app `BetaSetting`? [you can use Sourcery for that too](https://github.com/krzysztofzablocki/AutomaticSettings)
 
@@ -90,7 +90,7 @@ You can also watch this quick getting started and intro to mocking video by Insi
 
 - _Binary form_
 
-    Download the  latest release with the prebuilt binary from [release tab](https://github.com/krzysztofzablocki/Sourcery/releases/latest). Unzip the archive into the desired destination and run `bin/sourcery`
+    Download the latest release with the prebuilt binary from [release tab](https://github.com/krzysztofzablocki/Sourcery/releases/latest). Unzip the archive into the desired destination and run `bin/sourcery`
     
 - _[Homebrew](https://brew.sh)_
 
@@ -120,11 +120,20 @@ You can also watch this quick getting started and intro to mocking video by Insi
 
         Run `xcodebuild -scheme sourcery -destination generic/platform=macOS -archivePath sourcery.xcarchive archive` and export the binary from the archive.
 
+- _SPM (for plugin use only)_
+Add the package dependency to your `Package.swift` manifest from version `1.8.3`.
+
+```
+.package(url: "https://github.com/krzysztofzablocki/Sourcery.git", from: "1.8.3")
+```
+
 ## Documentation
 
 Full documentation for the latest release is available [here](http://merowing.info/Sourcery/).
 
 ## Usage
+
+### Running the executable
 
 Sourcery is a command line tool; you can either run it manually or in a custom build phase using the following command:
 
@@ -133,6 +142,32 @@ $ ./bin/sourcery --sources <sources path> --templates <templates path> --output 
 ```
 
 > Note: this command differs depending on how you installed Sourcery (see [Installing](#installing))
+
+### Swift Package command
+
+Sourcery can now be used as a Swift package command plugin. In order to do this, the package must be added as a dependency to your Swift package or Xcode project (see [Installing](#installing) above).
+
+To provide a configuration for the plugin to use, place a `.sourcery.yml` file at the root of the target's directory (in the sources folder rather than the root of the package).
+
+#### Running from the command line
+
+To verify the plugin can be found by SwiftPM, use:
+
+```
+$ swift package plugin --list
+```
+
+To run the code generator, you need to allow changes to the project with the `--allow-writing-to-package-directory` flag:
+
+```
+$ swift package --allow-writing-to-package-directory sourcery-command
+```
+
+#### Running in Xcode
+
+Inside a project/package that uses this command plugin, right-click the project and select "SourceryCommand" from the "SourceryPlugins" menu group.
+
+> ⚠️ Note that this is only available from Xcode 14 onwards.
 
 ### Command line options
 
@@ -149,10 +184,11 @@ $ ./bin/sourcery --sources <sources path> --templates <templates path> --output 
 - `--prune` [default: false] - Prune empty generated files
 - `--version` - Display the current version of Sourcery
 - `--help` - Display help information
+- `--cacheBasePath` - Base path to the cache directory. Can be overriden by the config file.
 
 ### Configuration file
 
-Instead of CLI arguments you can use a `.sourcery.yml` configuration file:
+Instead of CLI arguments, you can use a `.sourcery.yml` configuration file:
 
 ```yaml
 sources:
@@ -161,7 +197,7 @@ sources:
 templates:
   - <templates path>
   - <templates path>
-force-parse:
+forceParse:
   - <string value>
   - <string value>
 output:
@@ -173,7 +209,7 @@ args:
 Read more about this configuration file [here](https://merowing.info/Sourcery/usage.html#configuration-file).
 
 ## Issues
-If you get unverified developer warning when using binary zip distribution try:
+If you get an unverified developer warning when using binary zip distribution try:
 `xattr -dr com.apple.quarantine Sourcery-1.1.1`
 
 ## Contributing
